@@ -21,7 +21,7 @@ class CustomPage extends Page implements HasForms
 
     public ?array $data = null;
 
-    public function mount()
+    public function mount(): void
     {
         $this->form->fill();
     }
@@ -44,14 +44,14 @@ class CustomPage extends Page implements HasForms
     public function htmlRender(): string
     {
         return "
-            <div id='html-render'>
-                <h1>This is a HTML Render</h1>
+            <div id='html-render' class='p-4 bg-white shadow-md rounded-md'>
+                <p>This is a HTML Render</p>
                 <p>Here you can add your custom HTML</p>
             </div>
         ";
     }
 
-    public function notify()
+    public function notify(): void
     {
         try {
            $data = $this->form->getState('data');
