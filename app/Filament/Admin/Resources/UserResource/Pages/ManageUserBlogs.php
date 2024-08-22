@@ -6,7 +6,11 @@ use App\Filament\Admin\Resources\UserResource;
 use App\Models\Blog;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
@@ -36,22 +40,22 @@ class ManageUserBlogs extends ManageRelatedRecords
     {
         return $form
             ->schema([
-                Forms\Components\Section::make()
+                Section::make()
                     ->schema([
-                        Forms\Components\TextInput::make('title')
+                        TextInput::make('title')
                             ->required()
                             ->live(onBlur: true)
                             ->maxLength(255)
                             ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
-                        Forms\Components\TextInput::make('slug')
+                        TextInput::make('slug')
                             ->disabled()
                             ->dehydrated() // đây là một trường ảo, không cần lưu vào database
                             ->required()
                             ->maxLength(255)
                             ->unique(Blog::class, 'slug', ignoreRecord: true),
 
-                        Forms\Components\MarkdownEditor::make('content')
+                        MarkdownEditor::make('content')
                             ->required()
                             ->columnSpan('full'),
                         Forms\Components\Actions::make([
@@ -75,7 +79,7 @@ class ManageUserBlogs extends ManageRelatedRecords
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Image')
+                Section::make('Image')
                     ->schema([
                         Forms\Components\FileUpload::make('image')
                             ->image()

@@ -5,6 +5,8 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\BlogResource\Pages;
 use App\Filament\Admin\Resources\BlogResource\RelationManagers;
 use App\Models\Blog;
+use Filament\Infolists\Components\Tabs;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Tables\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -192,6 +194,27 @@ class BlogResource extends Resource
                             ->hiddenLabel(),
                     ])
                     ->collapsible(),
+//                Tab
+                Tabs::make('Tabs')
+                    ->tabs([
+                        Tabs\Tab::make('UserInfo')
+                            ->schema([
+                                TextEntry::make('name')
+                                    ->label('Name')
+                                    ->default(fn (Blog $record) => $record->user->name),
+                                TextEntry::make('email')
+                                    ->label('Email')
+                                    ->default(fn (Blog $record) => $record->user->email),
+
+                            ]),
+                        Tabs\Tab::make('Counter Blog')
+                            ->schema([
+                                TextEntry::make('Total Blog')
+                                    ->label('Total Blog')
+                                    ->default(fn (Blog $record) => $record->user->blogs->count()),
+                            ]),
+                    ])
+                ->columnSpanFull(),
             ]);
     }
 
