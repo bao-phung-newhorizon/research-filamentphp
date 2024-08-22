@@ -109,11 +109,22 @@ class BlogResource extends Resource
             ->filters([
             ])
             ->actions([
-                ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make()
+                    ->label('')
+                    ->icon('heroicon-o-eye')
+                    ->tooltip('View Blog')
+//                    ->extraAttributes([
+//                        'id' => 'blog-icon-child-custom',
+//                    ])
+                ,
+
+                    Tables\Actions\EditAction::make()
+                    ->label('')
+                    ->icon('heroicon-o-pencil')
+                    ->tooltip('Edit Blog'),
+
                     Action::make('Status')
-                        ->label(fn (Blog $record) => $record->status == 1 ? 'Draft' : 'Publish')
+                        ->label('')
                         ->icon(fn (Blog $record) => $record->status == 1 ? 'heroicon-o-x-mark' : 'heroicon-o-check')
                         ->requiresConfirmation()
                         ->modalHeading(fn (Blog $record) => $record->status == 1 ? 'Change to Draft' : 'Change to Publish')
@@ -123,9 +134,12 @@ class BlogResource extends Resource
                             $record->update([
                                 'status' => $record->status == 1 ? 0 : 1,
                             ]);
-                        }),
+                        })
+                        ->tooltip(fn (Blog $record) => $record->status == 1 ? 'Change to Draft' : 'Publish'),
+
                     Action::make('EditUserModel')
-                        ->label('Edit User To Model')
+                        ->label('')
+                        ->icon('heroicon-o-user')
                         ->form([
                             Select::make('user_id')
                                 ->label('User')
@@ -140,8 +154,8 @@ class BlogResource extends Resource
                             $record->update([
                                 'user_id' => $data['user_id'],
                             ]);
-                        }),
-                ])
+                        })
+                        ->tooltip('Change User'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
