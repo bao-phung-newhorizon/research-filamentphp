@@ -6,6 +6,7 @@ use App\Filament\Admin\Resources\UserResource\Pages;
 use App\Filament\Admin\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists\Infolist;
@@ -37,6 +38,14 @@ class UserResource extends Resource
                     ->password()
                     ->autocomplete('new-password')
                     ->required(),
+
+//                Role
+                Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->required()
+                    ->preload()
+                    ->searchable()
             ]);
     }
 
@@ -57,6 +66,12 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('updated_at')
                     ->formatStateUsing(fn ($state) => Carbon::parse($state)->diffForHumans())
                     ->sortable(),
+
+//                Role
+//                Tables\Columns\TextColumn::make('roles')
+//                    ->format(fn ($value) => $value->map(fn ($role) => $role->name)->join(', '))
+//                    ->searchable(isIndividual: true)
+//                    ->sortable(),
             ])
             ->filters([
                 //

@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources\UserResource\Pages;
 
 use App\Filament\Admin\Resources\UserResource;
 use Filament\Actions;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\EditRecord;
@@ -29,6 +30,13 @@ class EditUser extends EditRecord
                 TextInput::make('email')
                     ->disabled()
                     ->label('Email'),
+                //                Role
+                Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->required()
+                    ->preload()
+                    ->searchable()
             ]);
     }
 }
