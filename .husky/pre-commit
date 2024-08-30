@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Running pre-commit hook"
+
+# Run Pint to check and fix code formatting
+./vendor/bin/pint
