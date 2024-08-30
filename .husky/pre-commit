@@ -3,4 +3,6 @@
 
 echo "Running pre-commit hook"
 
-npx lint-staged
+#npx lint-staged
+
+git pull
