@@ -2,11 +2,12 @@
 
 namespace App\Providers;
 
-use Filament\Support\Facades\FilamentColor;
-use Illuminate\Support\ServiceProvider;
+use Filament\Support\Assets\Css;
 use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentAsset;
-use Filament\Support\Assets\Css;
+use Filament\Support\Facades\FilamentColor;
+use Illuminate\Support\ServiceProvider;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -23,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         FilamentAsset::register([
-            Css::make('custom-stylesheet', __DIR__ . '/../../resources/css/custom.css')
+            Css::make('custom-stylesheet', __DIR__.'/../../resources/css/custom.css'),
         ]);
         FilamentColor::register([
             //color primary

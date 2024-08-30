@@ -56,7 +56,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->default()
             ->plugins([
-                FilamentShieldPlugin::make()
+                FilamentShieldPlugin::make(),
             ]);
     }
 }

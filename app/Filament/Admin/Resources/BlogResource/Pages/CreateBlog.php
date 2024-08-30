@@ -4,7 +4,6 @@ namespace App\Filament\Admin\Resources\BlogResource\Pages;
 
 use App\Filament\Admin\Resources\BlogResource;
 use App\Models\Blog;
-use Filament\Actions;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
@@ -47,10 +46,9 @@ class CreateBlog extends CreateRecord
                             Action::make('Generate Content')
                                 ->action(function (Get $get, Set $set) {
                                     $value = $get('content');
-                                    $set('content', $value . file_get_contents('https://loripsum.net/api/1/short/plaintext'));
-                                })
+                                    $set('content', $value.file_get_contents('https://loripsum.net/api/1/short/plaintext'));
+                                }),
                         ])->columnSpan('full'),
-
 
                         Select::make('status')
                             ->options([

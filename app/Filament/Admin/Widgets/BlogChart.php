@@ -15,7 +15,7 @@ class BlogChart extends ChartWidget
 
         $userData = $users->map(function ($user) {
             return [
-                'name' => $user->name,
+                'name'  => $user->name,
                 'blogs' => $user->blogs_count,
             ];
         });
@@ -24,7 +24,7 @@ class BlogChart extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'Users',
-                    'data' => $userData->pluck('blogs')->all(),
+                    'data'  => $userData->pluck('blogs')->all(),
                 ],
             ],
             'labels' => $userData->pluck('name')->all(),

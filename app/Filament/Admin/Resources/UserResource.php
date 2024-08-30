@@ -3,27 +3,27 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\UserResource\Pages;
-use App\Filament\Admin\Resources\UserResource\RelationManagers;
 use App\Models\User;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components;
 use Filament\Infolists\Infolist;
+use Filament\Pages\SubNavigationPosition;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Pages\SubNavigationPosition;
-use Filament\Resources\Pages\Page;
 use Illuminate\Support\Carbon;
-use Filament\Infolists\Components;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
+
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -39,13 +39,13 @@ class UserResource extends Resource
                     ->autocomplete('new-password')
                     ->required(),
 
-//                Role
+                //                Role
                 Select::make('roles')
                     ->relationship('roles', 'name')
                     ->multiple()
                     ->required()
                     ->preload()
-                    ->searchable()
+                    ->searchable(),
             ]);
     }
 
@@ -54,8 +54,8 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                                ->searchable(isIndividual: true)
-                                ->sortable(),
+                    ->searchable(isIndividual: true)
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(isIndividual: true)
                     ->sortable(),
@@ -67,17 +67,17 @@ class UserResource extends Resource
                     ->formatStateUsing(fn ($state) => Carbon::parse($state)->diffForHumans())
                     ->sortable(),
 
-//                Role
-//                Tables\Columns\TextColumn::make('roles')
-//                    ->format(fn ($value) => $value->map(fn ($role) => $role->name)->join(', '))
-//                    ->searchable(isIndividual: true)
-//                    ->sortable(),
+                //                Role
+                //                Tables\Columns\TextColumn::make('roles')
+                //                    ->format(fn ($value) => $value->map(fn ($role) => $role->name)->join(', '))
+                //                    ->searchable(isIndividual: true)
+                //                    ->sortable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-//                Tables\Actions\ViewAction::make(),
+                //                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -114,7 +114,6 @@ class UserResource extends Resource
             ]);
     }
 
-
     public static function getRecordSubNavigation(Page $page): array
     {
         return $page->generateNavigationItems([
@@ -123,13 +122,14 @@ class UserResource extends Resource
             Pages\ManageUserBlogs::class,
         ]);
     }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'view' => Pages\ViewUser::route('/{record}'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index'       => Pages\ListUsers::route('/'),
+            'create'      => Pages\CreateUser::route('/create'),
+            'view'        => Pages\ViewUser::route('/{record}'),
+            'edit'        => Pages\EditUser::route('/{record}/edit'),
             'manageBlogs' => Pages\ManageUserBlogs::route('/{record}/blogs'),
         ];
     }

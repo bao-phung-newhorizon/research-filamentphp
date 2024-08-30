@@ -3,23 +3,21 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\BlogResource\Pages;
-use App\Filament\Admin\Resources\BlogResource\RelationManagers;
 use App\Models\Blog;
-use Filament\Infolists\Components\Tabs;
-use Filament\Infolists\Components\TextEntry;
-use Filament\Tables\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
+use Filament\Infolists\Components;
+use Filament\Infolists\Components\Tabs;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
-use Filament\Infolists\Infolist;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Filament\Infolists\Components;
 
 class BlogResource extends Resource
 {
@@ -53,8 +51,8 @@ class BlogResource extends Resource
                             Forms\Components\Actions\Action::make('Generate Content')
                                 ->action(function (Forms\Get $get, Forms\Set $set) {
                                     $value = $get('content');
-                                    $set('content', $value . file_get_contents('https://loripsum.net/api/1/short/plaintext'));
-                                })
+                                    $set('content', $value.file_get_contents('https://loripsum.net/api/1/short/plaintext'));
+                                }),
                         ])->columnSpan('full'),
 
                         Forms\Components\BelongsToSelect::make('user_id')
@@ -109,53 +107,53 @@ class BlogResource extends Resource
             ->filters([
             ])
             ->actions([
-                    Tables\Actions\ViewAction::make()
+                Tables\Actions\ViewAction::make()
                     ->label('')
                     ->icon('heroicon-o-eye')
                     ->tooltip('View Blog')
-//                    ->extraAttributes([
-//                        'id' => 'blog-icon-child-custom',
-//                    ])
+                //                    ->extraAttributes([
+                //                        'id' => 'blog-icon-child-custom',
+                //                    ])
                 ,
 
-                    Tables\Actions\EditAction::make()
+                Tables\Actions\EditAction::make()
                     ->label('')
                     ->icon('heroicon-o-pencil')
                     ->tooltip('Edit Blog'),
 
-                    Action::make('Status')
-                        ->label('')
-                        ->icon(fn (Blog $record) => $record->status == 1 ? 'heroicon-o-x-mark' : 'heroicon-o-check')
-                        ->requiresConfirmation()
-                        ->modalHeading(fn (Blog $record) => $record->status == 1 ? 'Change to Draft' : 'Change to Publish')
-                        ->modalDescription(fn (Blog $record) => $record->status == 1 ? 'Are you sure you want to change this blog to draft?' : 'Are you sure you want to publish this blog?')
-                        ->modalSubmitActionLabel(fn (Blog $record) => $record->status == 1 ? 'Change to Draft' : 'Publish')
-                        ->action(function (Blog $record) {
-                            $record->update([
-                                'status' => $record->status == 1 ? 0 : 1,
-                            ]);
-                        })
-                        ->tooltip(fn (Blog $record) => $record->status == 1 ? 'Change to Draft' : 'Publish'),
+                Action::make('Status')
+                    ->label('')
+                    ->icon(fn (Blog $record) => $record->status == 1 ? 'heroicon-o-x-mark' : 'heroicon-o-check')
+                    ->requiresConfirmation()
+                    ->modalHeading(fn (Blog $record) => $record->status == 1 ? 'Change to Draft' : 'Change to Publish')
+                    ->modalDescription(fn (Blog $record) => $record->status == 1 ? 'Are you sure you want to change this blog to draft?' : 'Are you sure you want to publish this blog?')
+                    ->modalSubmitActionLabel(fn (Blog $record) => $record->status == 1 ? 'Change to Draft' : 'Publish')
+                    ->action(function (Blog $record) {
+                        $record->update([
+                            'status' => $record->status == 1 ? 0 : 1,
+                        ]);
+                    })
+                    ->tooltip(fn (Blog $record) => $record->status == 1 ? 'Change to Draft' : 'Publish'),
 
-                    Action::make('EditUserModel')
-                        ->label('')
-                        ->icon('heroicon-o-user')
-                        ->form([
-                            Select::make('user_id')
-                                ->label('User')
-                                ->options(
-                                    function (Blog $record) {
-                                        return DB::table('users')->pluck('name', 'id');
-                                    }
-                                )
-                                ->required()
-                                ->default(fn (Blog $record) => $record->user_id)
-                        ])->action(function (Blog $record, $data) {
-                            $record->update([
-                                'user_id' => $data['user_id'],
-                            ]);
-                        })
-                        ->tooltip('Change User'),
+                Action::make('EditUserModel')
+                    ->label('')
+                    ->icon('heroicon-o-user')
+                    ->form([
+                        Select::make('user_id')
+                            ->label('User')
+                            ->options(
+                                function (Blog $record) {
+                                    return DB::table('users')->pluck('name', 'id');
+                                }
+                            )
+                            ->required()
+                            ->default(fn (Blog $record) => $record->user_id),
+                    ])->action(function (Blog $record, $data) {
+                        $record->update([
+                            'user_id' => $data['user_id'],
+                        ]);
+                    })
+                    ->tooltip('Change User'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -208,7 +206,7 @@ class BlogResource extends Resource
                             ->hiddenLabel(),
                     ])
                     ->collapsible(),
-//                Tab
+                //                Tab
                 Tabs::make('Tabs')
                     ->tabs([
                         Tabs\Tab::make('UserInfo')
@@ -228,23 +226,23 @@ class BlogResource extends Resource
                                     ->default(fn (Blog $record) => $record->user->blogs->count()),
                             ]),
                     ])
-                ->columnSpanFull(),
+                    ->columnSpanFull(),
             ]);
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBlogs::route('/'),
+            'index'  => Pages\ListBlogs::route('/'),
             'create' => Pages\CreateBlog::route('/create'),
-            'view' => Pages\ViewBlog::route('/{record}'),
-            'edit' => Pages\EditBlog::route('/{record}/edit'),
+            'view'   => Pages\ViewBlog::route('/{record}'),
+            'edit'   => Pages\EditBlog::route('/{record}/edit'),
         ];
     }
 
-//    public static function getGloballySearchableAttributes(): array
-//    {
-//        return ['title', 'slug'];
-//    }
-//getGloballySearchableAttributes là một phương thức tĩnh trả về mảng chứa các trường mà bạn muốn tìm kiếm toàn cục trên tất cả các trang của tài nguyên. Mặc định, Filament sẽ tìm kiếm trên tất cả các trường của tài nguyên, nhưng bạn có thể chỉ định các trường cụ thể mà bạn muốn tìm kiếm bằng cách sử dụng phương thức này.
+    //    public static function getGloballySearchableAttributes(): array
+    //    {
+    //        return ['title', 'slug'];
+    //    }
+    //getGloballySearchableAttributes là một phương thức tĩnh trả về mảng chứa các trường mà bạn muốn tìm kiếm toàn cục trên tất cả các trang của tài nguyên. Mặc định, Filament sẽ tìm kiếm trên tất cả các trường của tài nguyên, nhưng bạn có thể chỉ định các trường cụ thể mà bạn muốn tìm kiếm bằng cách sử dụng phương thức này.
 }

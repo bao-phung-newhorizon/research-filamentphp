@@ -4,23 +4,16 @@ namespace App\Filament\Admin\Resources\UserResource\Pages;
 
 use App\Filament\Admin\Resources\UserResource;
 use App\Models\Blog;
-use Filament\Actions;
 use Filament\Forms;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ManageUserBlogs extends ManageRelatedRecords
@@ -62,8 +55,8 @@ class ManageUserBlogs extends ManageRelatedRecords
                             Forms\Components\Actions\Action::make('Generate Content')
                                 ->action(function (Forms\Get $get, Forms\Set $set) {
                                     $value = $get('content');
-                                    $set('content', $value . file_get_contents('https://loripsum.net/api/1/short/plaintext'));
-                                })
+                                    $set('content', $value.file_get_contents('https://loripsum.net/api/1/short/plaintext'));
+                                }),
                         ])->columnSpan('full'),
 
                         Forms\Components\BelongsToSelect::make('user_id')
@@ -116,22 +109,21 @@ class ManageUserBlogs extends ManageRelatedRecords
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
-//                Tables\Actions\AssociateAction::make(),
+                //                Tables\Actions\AssociateAction::make(),
             ])
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
-    //                Tables\Actions\DissociateAction::make(),
+                    //                Tables\Actions\DissociateAction::make(),
                     Tables\Actions\DeleteAction::make(),
                 ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-//                    Tables\Actions\DissociateBulkAction::make(),
+                    //                    Tables\Actions\DissociateBulkAction::make(),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
-
 }

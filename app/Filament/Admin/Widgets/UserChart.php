@@ -15,19 +15,20 @@ class UserChart extends ChartWidget
 
         $userData = $users->map(function ($user) {
             return [
-                'name' => $user->name,
+                'name'  => $user->name,
                 'blogs' => $user->blogs_count,
             ];
         });
+
         return [
             'datasets' => [
                 [
-                    'label' => 'Users',
-                    'data' => $userData->pluck('blogs')->all(),
+                    'label'           => 'Users',
+                    'data'            => $userData->pluck('blogs')->all(),
                     'backgroundColor' => [
                         '#FF6633',
                         '#FFB399',
-                    ]
+                    ],
                 ],
             ],
             'labels' => $userData->pluck('name')->all(),

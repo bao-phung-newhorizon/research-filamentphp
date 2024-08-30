@@ -5,3 +5,6 @@ echo "Running pre-commit hook"
 
 # Run Pint to check and fix code formatting
 ./vendor/bin/pint
+
+git add .
+git push

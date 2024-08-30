@@ -19,7 +19,8 @@ class EditUser extends EditRecord
             Actions\ViewAction::make(),
         ];
     }
-//    disabled form fields
+
+    //    disabled form fields
     public function form(Form $form): Form
     {
         return $form
@@ -36,7 +37,7 @@ class EditUser extends EditRecord
                     ->multiple()
                     ->required()
                     ->preload()
-                    ->searchable()
+                    ->searchable(),
             ]);
     }
 }

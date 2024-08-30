@@ -10,11 +10,11 @@ use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Log;
-use Nette\Utils\Html;
 
 class CustomPage extends Page implements HasForms
 {
     use InteractsWithForms;
+
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.admin.pages.custom-page';
@@ -29,17 +29,16 @@ class CustomPage extends Page implements HasForms
     public function form(Form $form): Form
     {
         return $form->schema([
-           TextInput::make('notify')->label('Notify'),
+            TextInput::make('notify')->label('Notify'),
         ])->statePath('data');
     }
 
     public function getFormActions(): array
     {
         return [
-            Action::make('Notify')->submit('save')
+            Action::make('Notify')->submit('save'),
         ] ?? [];
     }
-
 
     public function htmlRender(): string
     {
@@ -54,9 +53,10 @@ class CustomPage extends Page implements HasForms
     public function notify(): void
     {
         try {
-           $data = $this->form->getState('data');
+            $data = $this->form->getState('data');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
+
             return;
         }
 

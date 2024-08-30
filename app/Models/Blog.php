@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Blog extends Model
 {
     use HasFactory;
+
     protected $table = 'blogs';
+
     protected $fillable = [
         'title',
         'content',
@@ -18,6 +20,7 @@ class Blog extends Model
         'status',
         'user_id',
     ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

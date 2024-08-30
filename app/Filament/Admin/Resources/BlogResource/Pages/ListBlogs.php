@@ -16,5 +16,4 @@ class ListBlogs extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
-
 }
